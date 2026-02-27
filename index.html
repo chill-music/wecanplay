@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Game Site</title>
+</head>
+<body>
+
+    <!-- Your Website Content Here -->
+
+    <!-- Firebase Configuration -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+        
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB4_l9ZUfCzRAZfqC1-7eWhnp8ftMFbKmM",
+            authDomain: "appforgames-d392f.firebaseapp.com",
+            projectId: "appforgames-d392f",
+            storageBucket: "appforgames-d392f.firebasestorage.app",
+            messagingSenderId: "586730925650",
+            appId: "1:586730925650:web:d452dd19248780578f798b",
+            measurementId: "G-PRH16V6F8X"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+
+        console.log("Firebase is connected successfully!"); // Message to confirm it works
+    </script>
+</body>
+</html>
