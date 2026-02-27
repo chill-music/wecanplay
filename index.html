@@ -4,17 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Game Site</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; background-color: #f0f0f0; }
+        #login-section { background: white; padding: 20px; border-radius: 8px; display: inline-block; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; background-color: #4285F4; color: white; border: none; border-radius: 5px; margin-top: 10px; }
+        button:hover { background-color: #357ae8; }
+        #user-info { display: none; margin-top: 20px; }
+        img { border-radius: 50%; width: 80px; height: 80px; }
+    </style>
 </head>
 <body>
 
-    <!-- Your Website Content Here -->
+    <!-- واجهة تسجيل الدخول -->
+    <div id="login-section">
+        <h2>Welcome to My Game</h2>
+        <p>Please sign in to play</p>
+        <button id="google-login-btn">Sign in with Google</button>
+    </div>
 
-    <!-- Firebase Configuration -->
+    <!-- واجهة المستخدم بعد الدخول -->
+    <div id="user-info">
+        <h2>Welcome, <span id="user-name"></span>!</h2>
+        <img id="user-pic" src="" alt="Profile Picture">
+        <br><br>
+        <button id="logout-btn">Sign Out</button>
+    </div>
+
+    <!-- Firebase SDK & Logic -->
     <script type="module">
-        // Import the functions you need from the SDKs you need
+        // Import Firebase functions
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
-        
+        // Import Auth functions
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
         // Your web app's Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyB4_l9ZUfCzRAZfqC1-7eWhnp8ftMFbKmM",
@@ -29,8 +52,52 @@
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
 
-        console.log("Firebase is connected successfully!"); // Message to confirm it works
+        // HTML Elements
+        const loginBtn = document.getElementById('google-login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const loginSection = document.getElementById('login-section');
+        const userInfo = document.getElementById('user-info');
+        const userName = document.getElementById('user-name');
+        const userPic = document.getElementById('user-pic');
+
+        // 1. Sign In Function
+        loginBtn.addEventListener('click', () => {
+            signInWithPopup(auth, provider)
+                .then((result) => {
+                    console.log("Logged in successfully!");
+                }).catch((error) => {
+                    console.error("Error signing in:", error);
+                });
+        });
+
+        // 2. Sign Out Function
+        logoutBtn.addEventListener('click', () => {
+            signOut(auth).then(() => {
+                console.log("Signed out successfully");
+            }).catch((error) => {
+                console.error("Error signing out:", error);
+            });
+        });
+
+        // 3. Observer: Check if user is logged in or not (Updates UI automatically)
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in
+                loginSection.style.display = 'none';
+                userInfo.style.display = 'block';
+                
+                // Show user data
+                userName.textContent = user.displayName;
+                userPic.src = user.photoURL;
+            } else {
+                // User is signed out
+                loginSection.style.display = 'block';
+                userInfo.style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>
