@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GameZone - Play & Win</title>
+    
+    <!-- Favicon (أيقونة الموقع في التبويب) -->
+    <link rel="icon" type="image/png" href="https://img.icons8.com/clouds/100/controller.png" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --primary: #6c5ce7; --secondary: #a29bfe; --dark: #1a1a2e; --darker: #16213e; --light: #eee; --success: #00b894; --danger: #d63031; --gold: #fdcb6e;
@@ -14,10 +18,22 @@
         
         /* Navbar */
         nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: var(--darker); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        .logo { font-size: 1.8rem; font-weight: 700; color: var(--primary); cursor: pointer; }
+        
+        /* Logo & Animation */
+        .logo-container { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .logo-img { width: 40px; height: 40px; border-radius: 10px; }
+        .logo { font-size: 1.8rem; font-weight: 700; color: var(--light); }
+        .logo span { color: var(--primary); display: inline-block; animation: pulse 2s infinite; }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); text-shadow: 0 0 0 rgba(108, 92, 231, 0); }
+            50% { transform: scale(1.05); text-shadow: 0 0 20px rgba(108, 92, 231, 0.7); }
+            100% { transform: scale(1); text-shadow: 0 0 0 rgba(108, 92, 231, 0); }
+        }
+
         .nav-right { display: flex; align-items: center; gap: 20px; }
-        .lang-switch { cursor: pointer; background: var(--primary); padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; transition: 0.3s; }
-        .lang-switch:hover { transform: scale(1.05); }
+        .lang-switch { cursor: pointer; background: var(--primary); padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; transition: 0.3s; border: none; color: white; font-weight: bold; }
+        .lang-switch:hover { transform: scale(1.05); background: #5a4ad1; }
         
         /* User Info Mini */
         .user-mini { display: flex; align-items: center; gap: 10px; cursor: pointer; background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 30px; }
@@ -32,7 +48,8 @@
         .avatar-box { width: 100px; height: 100px; margin: 0 auto 15px; position: relative; }
         .avatar-box img { width: 100%; height: 100%; border-radius: 50%; border: 4px solid var(--primary); }
         .level-badge { position: absolute; bottom: 0; right: 0; background: var(--primary); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid var(--dark); }
-        .user-id-box { background: rgba(0,0,0,0.3); padding: 8px; border-radius: 8px; margin: 10px 0; font-size: 0.9rem; display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; }
+        .user-id-box { background: rgba(0,0,0,0.3); padding: 8px; border-radius: 8px; margin: 10px 0; font-size: 0.9rem; display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; transition: 0.2s; }
+        .user-id-box:hover { background: rgba(0,0,0,0.5); }
         .copy-icon { font-size: 0.8rem; color: var(--secondary); }
         
         /* Stats */
@@ -57,12 +74,17 @@
 
         /* Popups */
         .popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 100; }
-        .popup-content { background: var(--darker); padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; position: relative; }
-        .close-btn { position: absolute; top: 10px; right: 15px; font-size: 1.5rem; cursor: pointer; color: #aaa; }
+        .popup-content { background: var(--darker); padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; position: relative; border: 1px solid var(--primary); }
+        .close-btn { position: absolute; top: 10px; right: 15px; font-size: 1.5rem; cursor: pointer; color: #aaa; transition: 0.2s; }
+        .close-btn:hover { color: var(--danger); }
 
         /* Login Screen */
         #login-screen { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
         .login-box { background: var(--darker); padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        
+        /* RTL Support for Arabic */
+        body.rtl { direction: rtl; }
+        body.rtl .section-title { border-left: none; border-right: 4px solid var(--primary); padding-left: 0; padding-right: 15px; }
     </style>
 </head>
 <body>
@@ -70,9 +92,12 @@
     <!-- Login Screen -->
     <div id="login-screen" style="display: none;">
         <div class="login-box">
-            <h1 class="logo">GameZone</h1>
+            <div class="logo-container" style="justify-content: center; margin-bottom: 20px;">
+                <img src="https://img.icons8.com/clouds/100/controller.png" class="logo-img" style="width: 60px; height: 60px;">
+                <div class="logo">Game<span>Zone</span></div>
+            </div>
             <p style="margin: 20px 0; color: #aaa;" data-translate="welcome_msg">Join the ultimate gaming experience</p>
-            <button id="google-login-btn" style="background: white; color: #444; padding: 12px 30px; border: none; border-radius: 30px; font-size: 1.1rem; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 10px;">
+            <button id="google-login-btn" style="background: white; color: #444; padding: 12px 30px; border: none; border-radius: 30px; font-size: 1.1rem; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 10px; margin: 0 auto;">
                 <img src="https://img.icons8.com/color/16/000000/google-logo.png"> <span data-translate="signin_google">Sign in with Google</span>
             </button>
         </div>
@@ -82,12 +107,18 @@
     <div id="main-app" style="display: none;">
         <!-- Navbar -->
         <nav>
-            <div class="logo">GameZone</div>
+            <div class="logo-container">
+                <!-- هنا تم اضافة اللوجو -->
+                <img src="https://img.icons8.com/clouds/100/controller.png" class="logo-img" alt="Logo">
+                <!-- هنا تم جعل الاسم يتحرك -->
+                <div class="logo">Game<span>Zone</span></div>
+            </div>
             <div class="nav-right">
                 <div class="user-coins"><span id="nav-coins">0</span> 🪙</div>
-                <div class="lang-switch onclick="toggleLanguage()">
+                <!-- تم اصلاح زر اللغة هنا -->
+                <button class="lang-switch" onclick="toggleLanguage()">
                     <span id="lang-btn-text">AR</span>
-                </div>
+                </button>
                 <div class="user-mini" onclick="toggleProfilePopup()">
                     <img id="nav-avatar" src="" alt="Avatar">
                     <span id="nav-name">User</span>
@@ -137,6 +168,7 @@
                         </div>
                         <div class="game-body">
                             <p class="game-desc" data-translate="jakeru_desc">Complex strategy card game. Modes: 1v1, 2v2, FFA.</p>
+                            <!-- تم التأكد من عمل زر اللعب -->
                             <button class="play-btn" onclick="createRoom('jakeru')" data-translate="play_now">Play Now</button>
                         </div>
                     </div>
@@ -172,19 +204,19 @@
         <div class="popup-content">
             <span class="close-btn" onclick="closePopup()">&times;</span>
             <h2 data-translate="create_room">Create Game Room</h2>
-            <p style="margin: 15px 0;" id="room-game-name">Game: Jakeru</p>
+            <p style="margin: 15px 0; color: var(--primary);" id="room-game-name">Game: Jakeru</p>
             
-            <label data-translate="select_mode">Select Mode:</label>
+            <label style="display:block; text-align:left;" data-translate="select_mode">Select Mode:</label>
             <select id="game-mode" style="width: 100%; padding: 10px; margin: 10px 0; border-radius: 8px; background: #333; color: white; border: 1px solid #555;">
                 <option value="1v1">1 vs 1</option>
                 <option value="2v2">2 vs 2 (Teams)</option>
                 <option value="ffa">4 Players (FFA)</option>
             </select>
 
-            <label data-translate="bet_amount">Bet Amount:</label>
+            <label style="display:block; text-align:left;" data-translate="bet_amount">Bet Amount:</label>
             <input type="number" id="bet-amount" value="10" min="0" style="width: 100%; padding: 10px; margin: 10px 0; border-radius: 8px; background: #333; color: white; border: 1px solid #555;">
 
-            <button onclick="startRoom()" style="width: 100%; padding: 12px; background: var(--success); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;" data-translate="start_game">Start Game</button>
+            <button onclick="startRoom()" style="width: 100%; padding: 12px; background: var(--success); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px;" data-translate="start_game">Start Game</button>
         </div>
     </div>
 
@@ -192,7 +224,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyB4_l9ZUfCzRAZfqC1-7eWhnp8ftMFbKmM",
@@ -275,18 +307,16 @@
             const docSnap = await getDoc(userRef);
 
             if (docSnap.exists()) {
-                // User exists: Update UI
                 currentUserData = docSnap.data();
                 updateUI(user, currentUserData);
             } else {
-                // New User: Create Document
                 const newUserData = {
                     uid: user.uid,
                     name: user.displayName,
                     email: user.email,
                     photoURL: user.photoURL,
-                    uniqueId: generateUniqueId(), // Custom ID like "GZ-12345"
-                    coins: 500, // Starting bonus
+                    uniqueId: generateUniqueId(),
+                    coins: 500,
                     xp: 0,
                     level: 1,
                     wins: 0,
@@ -302,18 +332,15 @@
 
         // 3. Update UI Function
         function updateUI(user, data) {
-            // Navbar
             document.getElementById('nav-avatar').src = user.photoURL;
             document.getElementById('nav-name').innerText = user.displayName;
             document.getElementById('nav-coins').innerText = data.coins;
 
-            // Profile
             document.getElementById('profile-avatar').src = user.photoURL;
             document.getElementById('profile-name').innerText = user.displayName;
             document.getElementById('profile-level').innerText = data.level;
             document.getElementById('profile-uid').innerText = data.uniqueId;
             
-            // Stats
             document.getElementById('stat-wins').innerText = data.wins;
             document.getElementById('stat-losses').innerText = data.losses;
             document.getElementById('stat-coins').innerText = data.coins;
@@ -333,7 +360,7 @@
             signOut(auth);
         }
 
-        // 6. Room Creation Logic (Demo)
+        // 6. Room Creation Logic
         window.createRoom = (gameName) => {
             selectedGame = gameName;
             document.getElementById('room-game-name').innerText = "Game: " + gameName.toUpperCase();
@@ -349,17 +376,12 @@
             const bet = parseInt(document.getElementById('bet-amount').value);
 
             if (currentUserData.coins < bet) {
-                alert("Not enough coins!"); // Add translation later
+                alert("Not enough coins!");
                 return;
             }
 
-            // Deduct coins temporarily (logic for winner takes all later)
-            const userRef = doc(db, "users", auth.currentUser.uid);
-            await updateDoc(userRef, {
-                coins: -bet // Simple deduction for now, logic needs to be server-side later
-            });
-
-            alert(`Creating ${selectedGame} room...\nMode: ${mode}\nBet: ${bet}\n\n(Logic to redirect to game page will be here)`);
+            // Logic placeholder for game start
+            alert(`${translations[currentLang].start_game}:\nGame: ${selectedGame}\nMode: ${mode}\nBet: ${bet}`);
             closePopup();
         }
 
@@ -370,11 +392,12 @@
             alert(translations[currentLang].id_copied);
         }
 
-        // 8. Language Toggle
+        // 8. Language Toggle (Fixed)
         window.toggleLanguage = () => {
             currentLang = currentLang === 'en' ? 'ar' : 'en';
             document.getElementById('lang-btn-text').innerText = currentLang === 'en' ? 'AR' : 'EN';
             
+            // Translate all elements
             document.querySelectorAll('[data-translate]').forEach(el => {
                 const key = el.getAttribute('data-translate');
                 if (translations[currentLang][key]) {
@@ -383,7 +406,11 @@
             });
             
             // Adjust direction for Arabic
-            document.body.style.direction = currentLang === 'ar' ? 'rtl' : 'ltr';
+            if (currentLang === 'ar') {
+                document.body.classList.add('rtl');
+            } else {
+                document.body.classList.remove('rtl');
+            }
         }
 
     </script>
