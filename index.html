@@ -4,85 +4,84 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GameZone - Play & Win</title>
-    
-    <!-- Favicon (أيقونة الموقع في التبويب) -->
     <link rel="icon" type="image/png" href="https://img.icons8.com/clouds/100/controller.png" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --primary: #6c5ce7; --secondary: #a29bfe; --dark: #1a1a2e; --darker: #16213e; --light: #eee; --success: #00b894; --danger: #d63031; --gold: #fdcb6e;
+            --red-player: #d63031; --blue-player: #0984e3; --green-player: #00b894; --yellow-player: #fdcb6e;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { background-color: var(--dark); color: var(--light); min-height: 100vh; overflow-x: hidden; }
         
         /* Navbar */
         nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: var(--darker); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        
-        /* Logo & Animation */
         .logo-container { display: flex; align-items: center; gap: 10px; cursor: pointer; }
         .logo-img { width: 40px; height: 40px; border-radius: 10px; }
         .logo { font-size: 1.8rem; font-weight: 700; color: var(--light); }
         .logo span { color: var(--primary); display: inline-block; animation: pulse 2s infinite; }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); text-shadow: 0 0 0 rgba(108, 92, 231, 0); }
-            50% { transform: scale(1.05); text-shadow: 0 0 20px rgba(108, 92, 231, 0.7); }
-            100% { transform: scale(1); text-shadow: 0 0 0 rgba(108, 92, 231, 0); }
-        }
+        @keyframes pulse { 0% { transform: scale(1); text-shadow: 0 0 0 rgba(108, 92, 231, 0); } 50% { transform: scale(1.05); text-shadow: 0 0 20px rgba(108, 92, 231, 0.7); } 100% { transform: scale(1); text-shadow: 0 0 0 rgba(108, 92, 231, 0); } }
 
         .nav-right { display: flex; align-items: center; gap: 20px; }
         .lang-switch { cursor: pointer; background: var(--primary); padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; transition: 0.3s; border: none; color: white; font-weight: bold; }
-        .lang-switch:hover { transform: scale(1.05); background: #5a4ad1; }
-        
-        /* User Info Mini */
         .user-mini { display: flex; align-items: center; gap: 10px; cursor: pointer; background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 30px; }
         .user-mini img { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--primary); }
         .user-coins { color: var(--gold); font-weight: bold; display: flex; align-items: center; gap: 5px; }
         
-        /* Main Container */
+        /* Containers */
         .container { padding: 30px 5%; display: flex; gap: 30px; flex-wrap: wrap; }
         
-        /* Profile Card (Left) */
-        .profile-card { flex: 1; min-width: 300px; background: var(--darker); border-radius: 20px; padding: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.05); position: relative; }
+        /* Profile Card */
+        .profile-card { flex: 1; min-width: 300px; background: var(--darker); border-radius: 20px; padding: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
         .avatar-box { width: 100px; height: 100px; margin: 0 auto 15px; position: relative; }
         .avatar-box img { width: 100%; height: 100%; border-radius: 50%; border: 4px solid var(--primary); }
         .level-badge { position: absolute; bottom: 0; right: 0; background: var(--primary); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid var(--dark); }
-        .user-id-box { background: rgba(0,0,0,0.3); padding: 8px; border-radius: 8px; margin: 10px 0; font-size: 0.9rem; display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; transition: 0.2s; }
-        .user-id-box:hover { background: rgba(0,0,0,0.5); }
-        .copy-icon { font-size: 0.8rem; color: var(--secondary); }
-        
-        /* Stats */
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
         .stat-box { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; }
         .stat-val { font-size: 1.2rem; font-weight: bold; color: var(--primary); }
         .stat-label { font-size: 0.7rem; color: #aaa; }
 
-        /* Games Lobby (Right) */
+        /* Lobby */
         .lobby-section { flex: 2; min-width: 300px; }
         .section-title { font-size: 1.5rem; margin-bottom: 20px; border-left: 4px solid var(--primary); padding-left: 15px; }
-        
         .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
         .game-card { background: linear-gradient(145deg, var(--darker), #222); border-radius: 15px; overflow: hidden; transition: 0.3s; cursor: pointer; border: 1px solid transparent; }
-        .game-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 10px 20px rgba(108, 92, 231, 0.2); }
+        .game-card:hover { transform: translateY(-5px); border-color: var(--primary); }
         .game-header { height: 120px; background-size: cover; background-position: center; position: relative; }
         .game-title { position: absolute; bottom: 10px; left: 10px; font-size: 1.4rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
         .game-body { padding: 15px; }
-        .game-desc { font-size: 0.85rem; color: #aaa; margin-bottom: 15px; min-height: 40px; }
         .play-btn { width: 100%; padding: 10px; background: var(--primary); border: none; color: white; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        .play-btn:hover { background: #5a4ad1; }
+
+        /* --- GAME ROOM UI (JACKAROO) --- */
+        #game-room { display: none; height: calc(100vh - 70px); width: 100%; padding: 10px; background: var(--darker); position: relative; overflow: hidden; }
+        
+        /* Board Area */
+        .board-container { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; position: relative; }
+        .board-svg { width: 600px; height: 600px; background: #2d3436; border-radius: 20px; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
+
+        /* Card Hand */
+        .hand-container { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; background: rgba(0,0,0,0.7); padding: 15px; border-radius: 15px; z-index: 10; }
+        .card { width: 70px; height: 100px; background: white; border-radius: 8px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; font-weight: bold; color: #333; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 8px rgba(0,0,0,0.3); position: relative; }
+        .card:hover { transform: translateY(-20px); box-shadow: 0 8px 15px rgba(108, 92, 231, 0.5); }
+        .card.red { color: var(--red-player); }
+        .card.blue { color: var(--blue-player); }
+        .card.selected { border: 3px solid var(--gold); transform: translateY(-25px); }
+
+        /* Game Info */
+        .game-info-panel { position: absolute; top: 20px; right: 20px; background: rgba(0,0,0,0.8); padding: 15px; border-radius: 10px; width: 200px; }
+        .player-turn-indicator { font-size: 1.2rem; margin-bottom: 10px; color: var(--primary); }
+        .room-code-box { font-size: 0.9rem; color: #aaa; }
 
         /* Popups */
-        .popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 100; }
+        .popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 100; }
         .popup-content { background: var(--darker); padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; position: relative; border: 1px solid var(--primary); }
-        .close-btn { position: absolute; top: 10px; right: 15px; font-size: 1.5rem; cursor: pointer; color: #aaa; transition: 0.2s; }
-        .close-btn:hover { color: var(--danger); }
+        .close-btn { position: absolute; top: 10px; right: 15px; font-size: 1.5rem; cursor: pointer; color: #aaa; }
 
         /* Login Screen */
         #login-screen { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
         .login-box { background: var(--darker); padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         
-        /* RTL Support for Arabic */
         body.rtl { direction: rtl; }
         body.rtl .section-title { border-left: none; border-right: 4px solid var(--primary); padding-left: 0; padding-right: 15px; }
     </style>
@@ -103,23 +102,17 @@
         </div>
     </div>
 
-    <!-- Main App -->
+    <!-- Main App (Lobby) -->
     <div id="main-app" style="display: none;">
-        <!-- Navbar -->
         <nav>
             <div class="logo-container">
-                <!-- هنا تم اضافة اللوجو -->
                 <img src="https://img.icons8.com/clouds/100/controller.png" class="logo-img" alt="Logo">
-                <!-- هنا تم جعل الاسم يتحرك -->
                 <div class="logo">Game<span>Zone</span></div>
             </div>
             <div class="nav-right">
                 <div class="user-coins"><span id="nav-coins">0</span> 🪙</div>
-                <!-- تم اصلاح زر اللغة هنا -->
-                <button class="lang-switch" onclick="toggleLanguage()">
-                    <span id="lang-btn-text">AR</span>
-                </button>
-                <div class="user-mini" onclick="toggleProfilePopup()">
+                <button class="lang-switch" onclick="toggleLanguage()"><span id="lang-btn-text">AR</span></button>
+                <div class="user-mini">
                     <img id="nav-avatar" src="" alt="Avatar">
                     <span id="nav-name">User</span>
                 </div>
@@ -127,7 +120,6 @@
         </nav>
 
         <div class="container">
-            <!-- Profile Sidebar -->
             <div class="profile-card">
                 <div class="avatar-box">
                     <img id="profile-avatar" src="" alt="Avatar">
@@ -138,42 +130,27 @@
                     <span>ID: <span id="profile-uid">...</span></span>
                     <span class="copy-icon">📋</span>
                 </div>
-                
                 <div class="stats-grid">
-                    <div class="stat-box">
-                        <div class="stat-val" id="stat-wins">0</div>
-                        <div class="stat-label" data-translate="wins">Wins</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-val" id="stat-losses">0</div>
-                        <div class="stat-label" data-translate="losses">Losses</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-val" id="stat-coins">500</div>
-                        <div class="stat-label" data-translate="coins">Coins</div>
-                    </div>
+                    <div class="stat-box"><div class="stat-val" id="stat-wins">0</div><div class="stat-label" data-translate="wins">Wins</div></div>
+                    <div class="stat-box"><div class="stat-val" id="stat-losses">0</div><div class="stat-label" data-translate="losses">Losses</div></div>
+                    <div class="stat-box"><div class="stat-val" id="stat-coins">500</div><div class="stat-label" data-translate="coins">Coins</div></div>
                 </div>
-                
                 <button onclick="signOutUser()" style="margin-top: 20px; background: var(--danger); border: none; color: white; padding: 10px; width: 100%; border-radius: 8px; cursor: pointer;" data-translate="signout">Sign Out</button>
             </div>
 
-            <!-- Games Lobby -->
             <div class="lobby-section">
                 <h2 class="section-title" data-translate="choose_game">Choose Your Game</h2>
                 <div class="game-grid">
-                    <!-- Game 1: Jakeru -->
                     <div class="game-card">
                         <div class="game-header" style="background: url('https://images.unsplash.com/photo-1606167668584-78701c57f13d?auto=format&fit=crop&w=400') center/cover;">
-                            <div class="game-title">Jakeru</div>
+                            <div class="game-title">Jackaroo</div>
                         </div>
                         <div class="game-body">
                             <p class="game-desc" data-translate="jakeru_desc">Complex strategy card game. Modes: 1v1, 2v2, FFA.</p>
-                            <!-- تم التأكد من عمل زر اللعب -->
-                            <button class="play-btn" onclick="createRoom('jakeru')" data-translate="play_now">Play Now</button>
+                            <button class="play-btn" onclick="createRoom('jackaroo')" data-translate="play_now">Play Now</button>
                         </div>
                     </div>
 
-                    <!-- Game 2: UNO -->
                     <div class="game-card">
                         <div class="game-header" style="background: linear-gradient(45deg, #ff9a9e, #fecfef);">
                             <div class="game-title" style="color: #d63031;">UNO</div>
@@ -184,14 +161,13 @@
                         </div>
                     </div>
 
-                    <!-- Game 3: Whot/Damwah -->
                     <div class="game-card">
                         <div class="game-header" style="background: url('https://images.unsplash.com/photo-1541278107931-e006523892df?auto=format&fit=crop&w=400') center/cover;">
-                            <div class="game-title">Damwah</div>
+                            <div class="game-title">Dominoes</div>
                         </div>
                         <div class="game-body">
-                            <p class="game-desc" data-translate="damwah_desc">Popular Arab card game. Fast-paced and fun!</p>
-                            <button class="play-btn" onclick="createRoom('damwah')" data-translate="play_now">Play Now</button>
+                            <p class="game-desc" data-translate="damwah_desc">Classic tile game. Match numbers to clear your hand!</p>
+                            <button class="play-btn" onclick="createRoom('dominoes')" data-translate="play_now">Play Now</button>
                         </div>
                     </div>
                 </div>
@@ -199,12 +175,57 @@
         </div>
     </div>
 
-    <!-- Create Room Popup -->
+    <!-- GAME ROOM (Hidden Initially) -->
+    <div id="game-room">
+        <nav style="position: absolute; top: 0; width: 100%; z-index: 20;">
+            <div class="logo-container" onclick="exitGame()">
+                <img src="https://img.icons8.com/clouds/100/controller.png" class="logo-img" alt="Logo">
+                <div class="logo" style="font-size: 1.2rem;">Exit <span>Game</span></div>
+            </div>
+        </nav>
+
+        <div class="game-info-panel">
+            <div class="player-turn-indicator">Turn: <span id="current-turn-name">Player 1</span></div>
+            <div class="room-code-box">Room: <span id="room-code-display">CODE</span></div>
+            <div style="margin-top:10px; font-size: 0.8rem;">Status: Waiting...</div>
+        </div>
+
+        <!-- Board Container -->
+        <div class="board-container">
+            <!-- SVG Board for Jackaroo (Simplified Representation) -->
+            <svg class="board-svg" viewBox="0 0 600 600">
+                <!-- Base Squares -->
+                <rect x="50" y="50" width="150" height="150" fill="#d63031" opacity="0.2" stroke="#d63031" stroke-width="2"/>
+                <rect x="400" y="50" width="150" height="150" fill="#0984e3" opacity="0.2" stroke="#0984e3" stroke-width="2"/>
+                <rect x="50" y="400" width="150" height="150" fill="#00b894" opacity="0.2" stroke="#00b894" stroke-width="2"/>
+                <rect x="400" y="400" width="150" height="150" fill="#fdcb6e" opacity="0.2" stroke="#fdcb6e" stroke-width="2"/>
+                
+                <!-- Track Path (Simplified Visuals) -->
+                <rect x="250" y="50" width="100" height="500" fill="#636e72" opacity="0.3" rx="10"/>
+                <rect x="50" y="250" width="500" height="100" fill="#636e72" opacity="0.3" rx="10"/>
+                
+                <!-- Center Home -->
+                <circle cx="300" cy="300" r="40" fill="#2d3436" stroke="#fff" stroke-width="2"/>
+                <text x="300" y="305" text-anchor="middle" fill="#fff" font-size="12">HOME</text>
+                
+                <!-- Marbles (Demo) -->
+                <circle id="m1" cx="80" cy="80" r="15" fill="var(--red-player)" stroke="#fff" class="marble" />
+                <circle id="m2" cx="110" cy="110" r="15" fill="var(--red-player)" stroke="#fff" class="marble" />
+            </svg>
+        </div>
+
+        <!-- Cards Hand -->
+        <div class="hand-container" id="player-hand">
+            <!-- Cards will be generated by JS -->
+        </div>
+    </div>
+
+    <!-- Popups -->
     <div id="room-popup" class="popup">
         <div class="popup-content">
             <span class="close-btn" onclick="closePopup()">&times;</span>
             <h2 data-translate="create_room">Create Game Room</h2>
-            <p style="margin: 15px 0; color: var(--primary);" id="room-game-name">Game: Jakeru</p>
+            <p style="margin: 15px 0; color: var(--primary);" id="room-game-name">Game: Jackaroo</p>
             
             <label style="display:block; text-align:left;" data-translate="select_mode">Select Mode:</label>
             <select id="game-mode" style="width: 100%; padding: 10px; margin: 10px 0; border-radius: 8px; background: #333; color: white; border: 1px solid #555;">
@@ -216,7 +237,7 @@
             <label style="display:block; text-align:left;" data-translate="bet_amount">Bet Amount:</label>
             <input type="number" id="bet-amount" value="10" min="0" style="width: 100%; padding: 10px; margin: 10px 0; border-radius: 8px; background: #333; color: white; border: 1px solid #555;">
 
-            <button onclick="startRoom()" style="width: 100%; padding: 12px; background: var(--success); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px;" data-translate="start_game">Start Game</button>
+            <button onclick="startGameSession()" style="width: 100%; padding: 12px; background: var(--success); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px;" data-translate="start_game">Start Game</button>
         </div>
     </div>
 
@@ -224,7 +245,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, updateDoc, collection, addDoc, onSnapshot, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyB4_l9ZUfCzRAZfqC1-7eWhnp8ftMFbKmM",
@@ -244,175 +265,163 @@
         let currentLang = 'en';
         let currentUserData = null;
         let selectedGame = null;
+        let currentRoomId = null;
 
-        // Translations Object
+        // Translations
         const translations = {
-            en: {
-                welcome_msg: "Join the ultimate gaming experience",
-                signin_google: "Sign in with Google",
-                wins: "Wins",
-                losses: "Losses",
-                coins: "Coins",
-                signout: "Sign Out",
-                choose_game: "Choose Your Game",
-                play_now: "Play Now",
-                jakeru_desc: "Complex strategy card game. Modes: 1v1, 2v2, FFA.",
-                uno_desc: "Classic card game. Match colors and numbers! Modes: 1v1, Teams.",
-                damwah_desc: "Popular Arab card game. Fast-paced and fun!",
-                create_room: "Create Game Room",
-                select_mode: "Select Mode:",
-                bet_amount: "Bet Amount:",
-                start_game: "Start Game",
-                id_copied: "ID Copied!"
-            },
-            ar: {
-                welcome_msg: "انضم لتجربة الألعاب المميزة",
-                signin_google: "تسجيل الدخول بجوجل",
-                wins: "انتصارات",
-                losses: "هزائم",
-                coins: "عملات",
-                signout: "تسجيل الخروج",
-                choose_game: "اختر لعبتك",
-                play_now: "العب الآن",
-                jakeru_desc: "لعبة ورق استراتيجية. الأنظمة: 1 ضد 1، 2 ضد 2، 4 لاعبين.",
-                uno_desc: "لعبة الورق الشهيرة. طابق الألوان والأرقام!",
-                damwah_desc: "لعبة الورق الشعبية. سريعة وممتعة!",
-                create_room: "إنشاء غرفة لعبة",
-                select_mode: "اختر النظام:",
-                bet_amount: "مبلغ الرهان:",
-                start_game: "بدء اللعبة",
-                id_copied: "تم نسخ المعرف!"
-            }
+            en: { welcome_msg: "Join the ultimate gaming experience", signin_google: "Sign in with Google", wins: "Wins", losses: "Losses", coins: "Coins", signout: "Sign Out", choose_game: "Choose Your Game", play_now: "Play Now", jakeru_desc: "Complex strategy card game.", uno_desc: "Classic card game.", damwah_desc: "Classic tile game.", create_room: "Create Game Room", select_mode: "Select Mode:", bet_amount: "Bet Amount:", start_game: "Start Game", id_copied: "ID Copied!" },
+            ar: { welcome_msg: "انضم لتجربة الألعاب المميزة", signin_google: "تسجيل الدخول بجوجل", wins: "انتصارات", losses: "هزائم", coins: "عملات", signout: "تسجيل الخروج", choose_game: "اختر لعبتك", play_now: "العب الآن", jakeru_desc: "لعبة ورق استراتيجية.", uno_desc: "لعبة الورق الشهيرة.", damwah_desc: "لعبة الدومينو.", create_room: "إنشاء غرفة لعبة", select_mode: "اختر النظام:", bet_amount: "مبلغ الرهان:", start_game: "بدء اللعبة", id_copied: "تم نسخ المعرف!" }
         };
 
         // UI Logic
         const loginScreen = document.getElementById('login-screen');
         const mainApp = document.getElementById('main-app');
+        const gameRoom = document.getElementById('game-room');
 
-        // 1. Auth State Observer
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 loginScreen.style.display = 'none';
                 mainApp.style.display = 'block';
+                gameRoom.style.display = 'none';
                 await handleUserDatabase(user);
             } else {
                 loginScreen.style.display = 'flex';
                 mainApp.style.display = 'none';
+                gameRoom.style.display = 'none';
             }
         });
 
-        // 2. Handle Database Creation/Update
         async function handleUserDatabase(user) {
             const userRef = doc(db, "users", user.uid);
             const docSnap = await getDoc(userRef);
-
             if (docSnap.exists()) {
                 currentUserData = docSnap.data();
                 updateUI(user, currentUserData);
             } else {
-                const newUserData = {
-                    uid: user.uid,
-                    name: user.displayName,
-                    email: user.email,
-                    photoURL: user.photoURL,
-                    uniqueId: generateUniqueId(),
-                    coins: 500,
-                    xp: 0,
-                    level: 1,
-                    wins: 0,
-                    losses: 0,
-                    friends: [],
-                    createdAt: new Date()
-                };
+                const newUserData = { uid: user.uid, name: user.displayName, email: user.email, photoURL: user.photoURL, uniqueId: generateUniqueId(), coins: 500, xp: 0, level: 1, wins: 0, losses: 0, friends: [], createdAt: new Date() };
                 await setDoc(userRef, newUserData);
                 currentUserData = newUserData;
                 updateUI(user, newUserData);
             }
         }
 
-        // 3. Update UI Function
         function updateUI(user, data) {
             document.getElementById('nav-avatar').src = user.photoURL;
             document.getElementById('nav-name').innerText = user.displayName;
             document.getElementById('nav-coins').innerText = data.coins;
-
             document.getElementById('profile-avatar').src = user.photoURL;
             document.getElementById('profile-name').innerText = user.displayName;
             document.getElementById('profile-level').innerText = data.level;
             document.getElementById('profile-uid').innerText = data.uniqueId;
-            
             document.getElementById('stat-wins').innerText = data.wins;
             document.getElementById('stat-losses').innerText = data.losses;
             document.getElementById('stat-coins').innerText = data.coins;
         }
 
-        // 4. Generate Unique ID
-        function generateUniqueId() {
-            return 'GZ-' + Math.random().toString(36).substr(2, 6).toUpperCase();
-        }
+        function generateUniqueId() { return 'GZ-' + Math.random().toString(36).substr(2, 6).toUpperCase(); }
 
-        // 5. Login/Logout Functions
-        document.getElementById('google-login-btn').addEventListener('click', () => {
-            signInWithPopup(auth, provider);
-        });
-
-        window.signOutUser = () => {
-            signOut(auth);
-        }
-
-        // 6. Room Creation Logic
+        document.getElementById('google-login-btn').addEventListener('click', () => { signInWithPopup(auth, provider); });
+        window.signOutUser = () => { signOut(auth); };
+        
+        // Room Logic
         window.createRoom = (gameName) => {
             selectedGame = gameName;
             document.getElementById('room-game-name').innerText = "Game: " + gameName.toUpperCase();
             document.getElementById('room-popup').style.display = 'flex';
         }
+        window.closePopup = () => { document.getElementById('room-popup').style.display = 'none'; }
 
-        window.closePopup = () => {
-            document.getElementById('room-popup').style.display = 'none';
-        }
-
-        window.startRoom = async () => {
+        window.startGameSession = async () => {
             const mode = document.getElementById('game-mode').value;
             const bet = parseInt(document.getElementById('bet-amount').value);
 
-            if (currentUserData.coins < bet) {
-                alert("Not enough coins!");
-                return;
-            }
+            if (currentUserData.coins < bet) { alert("Not enough coins!"); return; }
 
-            // Logic placeholder for game start
-            alert(`${translations[currentLang].start_game}:\nGame: ${selectedGame}\nMode: ${mode}\nBet: ${bet}`);
+            // Create Room in Firestore
+            const roomData = {
+                gameType: selectedGame,
+                mode: mode,
+                bet: bet,
+                host: currentUserData.name,
+                hostId: auth.currentUser.uid,
+                status: "waiting",
+                players: [auth.currentUser.uid],
+                createdAt: new Date()
+            };
+
+            const docRef = await addDoc(collection(db, "rooms"), roomData);
+            currentRoomId = docRef.id;
+            
             closePopup();
+            initGameView(selectedGame, currentRoomId);
         }
 
-        // 7. Copy ID
+        // --- GAME ENGINE ---
+        window.initGameView = (gameType, roomId) => {
+            mainApp.style.display = 'none';
+            gameRoom.style.display = 'block';
+            document.getElementById('room-code-display').innerText = roomId;
+
+            // Generate Demo Cards
+            generateCards();
+
+            // Setup Real-time Listener for the room
+            listenToRoom(roomId);
+        }
+
+        window.exitGame = () => {
+            gameRoom.style.display = 'none';
+            mainApp.style.display = 'block';
+            // Logic to remove player from room in DB needed here
+        }
+
+        function generateCards() {
+            const hand = document.getElementById('player-hand');
+            hand.innerHTML = '';
+            const types = ['J', 'Q', 'K', 'A', '7', '8'];
+            for(let i=0; i<5; i++) {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerText = types[Math.floor(Math.random() * types.length)];
+                card.onclick = () => playCard(card);
+                hand.appendChild(card);
+            }
+        }
+
+        function playCard(cardElement) {
+            // Deselect others
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+            cardElement.classList.add('selected');
+            alert(`You played: ${cardElement.innerText}. Logic to send move to DB goes here.`);
+        }
+
+        function listenToRoom(roomId) {
+            const roomRef = doc(db, "rooms", roomId);
+            onSnapshot(roomRef, (doc) => {
+                if (doc.exists()) {
+                    const data = doc.data();
+                    // Update Turn Indicator
+                    document.getElementById('current-turn-name').innerText = data.host; // Simplified
+                    console.log("Room update:", data);
+                }
+            });
+        }
+
+        window.toggleLanguage = () => {
+            currentLang = currentLang === 'en' ? 'ar' : 'en';
+            document.getElementById('lang-btn-text').innerText = currentLang === 'en' ? 'AR' : 'EN';
+            document.querySelectorAll('[data-translate]').forEach(el => {
+                const key = el.getAttribute('data-translate');
+                if (translations[currentLang][key]) el.innerText = translations[currentLang][key];
+            });
+            if (currentLang === 'ar') document.body.classList.add('rtl'); else document.body.classList.remove('rtl');
+        }
+
         window.copyID = () => {
             const id = document.getElementById('profile-uid').innerText;
             navigator.clipboard.writeText(id);
             alert(translations[currentLang].id_copied);
         }
-
-        // 8. Language Toggle (Fixed)
-        window.toggleLanguage = () => {
-            currentLang = currentLang === 'en' ? 'ar' : 'en';
-            document.getElementById('lang-btn-text').innerText = currentLang === 'en' ? 'AR' : 'EN';
-            
-            // Translate all elements
-            document.querySelectorAll('[data-translate]').forEach(el => {
-                const key = el.getAttribute('data-translate');
-                if (translations[currentLang][key]) {
-                    el.innerText = translations[currentLang][key];
-                }
-            });
-            
-            // Adjust direction for Arabic
-            if (currentLang === 'ar') {
-                document.body.classList.add('rtl');
-            } else {
-                document.body.classList.remove('rtl');
-            }
-        }
-
     </script>
 </body>
 </html>
